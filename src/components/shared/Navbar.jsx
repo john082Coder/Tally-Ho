@@ -8,7 +8,8 @@ import { TokenCheckerNav } from '..';
 import Web3ConnectModal from './Web3ConnectModal';
 import logo2 from '../../assets/images/logo2.png';
 import ealogo from '../../assets/images/etherauthority_logo.png';
-
+import { useWeb3React } from "@web3-react/core";
+export const short = (s) => `${s.substr(0, 7)}...${s.substr(s.length - 3, 3)}`;
 const Navbar = ({ setSidebarOpen }) => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -16,6 +17,17 @@ const Navbar = ({ setSidebarOpen }) => {
     const [scrolled, setScrolled] = useState(false);
     const [onTokenCheckPage, setOnTokenCheckPage] = useState(false);
     const [connectModalOpen, setConnectModalOpen] = useState(false);
+    const context = useWeb3React();
+    const {
+      connector,
+      library,
+      chainId,
+      account,
+      activate,
+      deactivate,
+      active,
+      error,
+    } = context;
 
     useEffect(() => {
         if (location.pathname.includes('/tokenchecker')) {
@@ -102,7 +114,7 @@ const Navbar = ({ setSidebarOpen }) => {
 
                 <TokenCheckerNav onTokenCheckPage={onTokenCheckPage} />
 
-                <div className='flex items-center'>
+                <div className='flex items-center' style={{display: active ? "none" : ""}}>
                     <button
                         type='button'
                         className='mx-4 flex h-10 min-h-[40px] items-center justify-center rounded-lg bg-primary-brand px-4 text-sm font-medium text-white transition duration-300 ease-in-out hover:bg-primary-brand/60'
@@ -117,6 +129,20 @@ const Navbar = ({ setSidebarOpen }) => {
                         setOpen={setConnectModalOpen}
                     />
                 </div>
+                <div className='flex items-center'
+                    style={{ display: active ? "" : "none" }}
+                >
+                    <button
+                        type='button'
+                        className='mx-4 flex h-10 min-h-[40px] items-center justify-center rounded-lg bg-primary-brand px-4 text-sm font-medium text-white transition duration-300 ease-in-out hover:bg-primary-brand/60'
+                        onClick={() => {deactivate();setConnectModalOpen(false);} }
+                    >
+                        <span>{short(account ? account : "")}</span>
+                        <FaWallet className='ml-2 opacity-40' />
+                    </button>
+                    
+                </div>
+
             </div>
         </header>
     );

@@ -2,8 +2,12 @@ import { Disclosure, Transition } from '@headlessui/react';
 import { ChevronDownIcon, ExternalLinkIcon } from '@heroicons/react/solid';
 import btally from '../../assets/images/tokens/btally.png';
 import doge from '../../assets/images/tokens/doge.svg';
-
+import Web3ConnectModal from '../shared/Web3ConnectModal';
+import { useState } from  'react';
+import { useWeb3React } from "@web3-react/core";
 const StakeTokensCard = ({ coverImg, avatar, tokenName, apyValue }) => {
+    const [connectModalOpen, setConnectModalOpen] = useState(false);
+    const {account, active} = useWeb3React();
     return (
         <div className='flex flex-col rounded-2xl bg-white p-6'>
             <div className='flex flex-row space-x-5 border-b-2 border-[#708eb7]/10 pb-4'>
@@ -31,10 +35,17 @@ const StakeTokensCard = ({ coverImg, avatar, tokenName, apyValue }) => {
                 </div>
             </div>
 
-            <div className='py-4 px-5'>
-                <button className='flex h-12 w-full items-center justify-center rounded-lg bg-primary-brand px-6 font-semibold text-white'>
+            <div className='py-4 px-5' style={{display: active ? "none" : ""}}>
+                <button 
+                    onClick={() => {setConnectModalOpen(true);}}
+                    className='flex h-12 w-full items-center justify-center rounded-lg bg-primary-brand px-6 font-semibold text-white'
+                >
                     Unlock Wallet
                 </button>
+                <Web3ConnectModal
+                        open={connectModalOpen}
+                        setOpen={setConnectModalOpen}
+                />
             </div>
 
             <Disclosure>
