@@ -7,7 +7,7 @@ import { useWeb3React } from "@web3-react/core";
 const StakeTallyCard = ({ coverImg, avatar, tokenName, apyValue }) => {
 
     const [connectModalOpen, setConnectModalOpen] = useState(false);
-    const {account, active} = useWeb3React();
+    const { active} = useWeb3React();
     //console.log("account = ", account);
     
     return (
