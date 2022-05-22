@@ -19,9 +19,7 @@ const Navbar = ({ setSidebarOpen }) => {
     const [connectModalOpen, setConnectModalOpen] = useState(false);
     const context = useWeb3React();
     const {
-      connector,
-      library,
-      chainId,
+      
       account,
       activate,
       deactivate,

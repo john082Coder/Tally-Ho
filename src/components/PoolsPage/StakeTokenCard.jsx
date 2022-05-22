@@ -7,7 +7,7 @@ import { useState } from  'react';
 import { useWeb3React } from "@web3-react/core";
 const StakeTokensCard = ({ coverImg, avatar, tokenName, apyValue }) => {
     const [connectModalOpen, setConnectModalOpen] = useState(false);
-    const {account, active} = useWeb3React();
+    const { active} = useWeb3React();
     return (
         <div className='flex flex-col rounded-2xl bg-white p-6'>
             <div className='flex flex-row space-x-5 border-b-2 border-[#708eb7]/10 pb-4'>
