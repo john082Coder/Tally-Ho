@@ -1,9 +1,48 @@
-import { Fragment } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import metamaskIcon from '../../assets/images/metamask.svg';
 import walletconnectIcon from '../../assets/images/walletconnect.svg';
+import { useWeb3React } from "@web3-react/core";
+import {
+    injected,
+    walletconnect,
+  } from "../../connectors";
 
+var ConnectorNames;
+(function (ConnectorNames) {
+    ConnectorNames["Injected"] = "Injected";
+    ConnectorNames["WalletConnect"] = "WalletConnect";
+})(ConnectorNames || (ConnectorNames = {}));
+
+const connectorsByName = {
+  [ConnectorNames.Injected]: injected,
+  [ConnectorNames.WalletConnect]: walletconnect,
+ 
+};
+console.log(connectorsByName.Injected);
 export default function Web3ConnectModal({ open, setOpen }) {
+   const context = useWeb3React();
+   const {
+    connector,
+    library,
+    chainId,
+    account,
+    activate,
+    deactivate,
+    active,
+    error,
+  } = context;
+
+    const [activatingConnector, setActivatingConnector] = useState();
+    useEffect(() => {
+        if (activatingConnector && activatingConnector === connector) {
+          setActivatingConnector(undefined);
+        }
+      }, [activatingConnector, connector]);
+    if (active) {
+        return <></>;
+    }
+
     return (
         <Transition.Root show={open} as={Fragment}>
             <Dialog
@@ -41,7 +80,13 @@ export default function Web3ConnectModal({ open, setOpen }) {
                     >
                         <div className='relative inline-block transform overflow-hidden rounded-lg bg-white text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:align-middle'>
                             <div className='rounded-xl bg-white p-2'>
-                                <button className='flex w-full flex-col items-center rounded-xl border border-white bg-white py-6 px-4 transition-colors duration-200 hover:bg-[#c3c3c3]/20'>
+                                <button
+                                    onClick={() => {
+                                        setActivatingConnector(connectorsByName[ConnectorNames.Injected]);
+                                        activate(connectorsByName[ConnectorNames.Injected]);
+                                    }} 
+                                    className='flex w-full flex-col items-center rounded-xl border border-white bg-white py-6 px-4 transition-colors duration-200 hover:bg-[#c3c3c3]/20'
+                                >
                                     <img
                                         src={metamaskIcon}
                                         alt='metamask icon'
@@ -55,7 +100,14 @@ export default function Web3ConnectModal({ open, setOpen }) {
                                     </p>
                                 </button>
                                 <hr className='my-2' />
-                                <button className='flex w-full flex-col items-center rounded-xl border border-white bg-white py-6 px-4 transition-colors duration-200 hover:bg-[#c3c3c3]/20'>
+                                <button 
+                                    onClick={() => {
+                                        setActivatingConnector(connectorsByName[ConnectorNames.WalletConnect]);
+                                        console.log(connectorsByName[ConnectorNames.WalletConnect]);
+                                        activate(connectorsByName[ConnectorNames.WalletConnect]);
+                                    }}
+                                    className='flex w-full flex-col items-center rounded-xl border border-white bg-white py-6 px-4 transition-colors duration-200 hover:bg-[#c3c3c3]/20'
+                                >
                                     <img
                                         src={walletconnectIcon}
                                         alt='metamask icon'
