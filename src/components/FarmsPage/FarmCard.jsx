@@ -1,14 +1,17 @@
 import Tooltip from 'rc-tooltip';
 import classNames from 'classnames';
 import { Disclosure } from '@headlessui/react';
+import { useState } from 'react';
+import Web3ConnectModal from '../shared/Web3ConnectModal';
 import {
     ExternalLinkIcon,
     InformationCircleIcon,
 } from '@heroicons/react/outline';
 import { MdOutlineHelpOutline, MdOutlineCalculate } from 'react-icons/md';
 import { ChevronDownIcon, ChevronRightIcon } from '@heroicons/react/solid';
-
+import { useWeb3React } from "@web3-react/core";
 const FarmCard = ({ item }) => {
+    const { active, connector, library, chainID, account} = useWeb3React();
     const {
         firstToken,
         secondToken,
@@ -21,6 +24,7 @@ const FarmCard = ({ item }) => {
         earned,
         isHot,
     } = item;
+    const [connectModalOpen, setConnectModalOpen] = useState(false);
 
     return (
         <Disclosure>
@@ -185,13 +189,19 @@ const FarmCard = ({ item }) => {
                             <ChevronRightIcon className='hidden h-10 w-10 text-gray-400 md:order-3 md:block' />
                         </div>
 
-                        <div className='mx-auto ml-auto flex w-full max-w-sm items-center space-x-2 border-b-2 border-gray-400/40 py-4 px-0 md:border-0 md:py-0 md:px-10'>
-                            <button className='ml-auto flex h-12 w-fit items-center justify-center rounded-lg bg-primary-brand px-6 font-semibold text-white md:ml-0 md:w-full'>
+                        <div className='mx-auto ml-auto flex w-full max-w-sm items-center space-x-2 border-b-2 border-gray-400/40 py-4 px-0 md:border-0 md:py-0 md:px-10' style={{display: active ? "none" : ""}}>
+                            <button
+                                onClick={() => {setConnectModalOpen(true);}}
+                                className='ml-auto flex h-12 w-fit items-center justify-center rounded-lg bg-primary-brand px-6 font-semibold text-white md:ml-0 md:w-full'>
                                 Unlock Wallet
                             </button>
+                            
                             <ChevronRightIcon className='hidden h-12 w-12 text-gray-400 md:block' />
                         </div>
-
+                        <Web3ConnectModal
+                                open={connectModalOpen}
+                                setOpen={setConnectModalOpen}
+                            />           
                         <div className='mx-10 flex w-full max-w-full items-center justify-between space-x-4 py-4 md:w-fit md:max-w-[250px] md:py-0'>
                             <button
                                 disabled
