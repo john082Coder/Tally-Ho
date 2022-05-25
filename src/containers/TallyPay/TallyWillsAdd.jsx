@@ -9,6 +9,8 @@ import {
 import { produce } from 'immer';
 import { nanoid } from 'nanoid';
 import { PlusIcon } from '@heroicons/react/solid';
+import tokens from '../../assets/data/tokens';
+import { debounce } from 'lodash';
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -27,11 +29,9 @@ const reducer = (state, action) => {
 };
 
 const TallyWillsAdd = () => {
-    //! the form data is not perfecty done, neither the reducer
-    // todo: Complete the form data and reducer
     const [state, dispatch] = useReducer(reducer, {
         formData: {
-            token: '',
+            token: tokens[0],
             address: '',
             amount: '',
             amountUSD: '',
@@ -49,6 +49,14 @@ const TallyWillsAdd = () => {
         },
     });
 
+    const handleChangeToken = debounce(e => {
+        dispatch({
+            type: 'updateFormData',
+            field: 'token',
+            value: e,
+        });
+    }, 500);
+
     console.log(state.formData);
 
     return (
@@ -60,7 +68,11 @@ const TallyWillsAdd = () => {
             }}
         >
             <div className='w-full'>
-                <SelectTokenCombobox />
+                <SelectTokenCombobox
+                    tokens={tokens}
+                    onChange={handleChangeToken}
+                    selected={state.formData.token}
+                />
             </div>
 
             <div className='mt-4 w-full'>
@@ -116,8 +128,12 @@ const TallyWillsAdd = () => {
                 </p>
 
                 <div className='flex items-center gap-6'>
-                    {state.formData.otherInheritors.map((item, index) => (
-                        <TPEditableButton item={item} index={index} />
+                    {state.formData?.otherInheritors?.map((item, index) => (
+                        <TPEditableButton
+                            item={item}
+                            index={index}
+                            dispatch={dispatch}
+                        />
                     ))}
                 </div>
             </div>

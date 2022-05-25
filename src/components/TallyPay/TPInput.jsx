@@ -9,12 +9,16 @@ const TPInput = ({
     name,
     rightIcon,
     dispatch,
+    actionType = 'updateFormData',
+    index,
 }) => {
     const handleChange = debounce(e => {
         dispatch({
-            type: 'updateFormData',
+            type: actionType,
             field: name,
             value: e.target.value,
+            // if the index is not null or undefined, then we need to add the index as well
+            index: index ?? null,
         });
     }, 500);
 

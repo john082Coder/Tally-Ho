@@ -1,11 +1,16 @@
 import { RadioGroup } from '@headlessui/react';
 import classNames from 'classnames';
-const TPChangeInheritorRadio = ({ options, value, onChange }) => {
+const TPChangeInheritorRadio = ({
+    options,
+    value,
+    onChange,
+    title = 'Change Inheritor wallet Address',
+}) => {
     return (
         <div className='mt-4'>
             <div className='flex items-center justify-between'>
                 <h2 className='text-sm font-medium text-tallyPay-primaryText'>
-                    Change Inheritor wallet Address
+                    {title}
                 </h2>
             </div>
 

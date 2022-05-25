@@ -53,6 +53,10 @@ export { default as ConnectWalletButton } from './TallyPay/ConnectWalletButton';
 export { default as TPEditableButton } from './TallyPay/TPEditableButton';
 export { default as TPRadioGroup } from './TallyPay/TPRadioGroup';
 export { default as TPChangeInheritorRadio } from './TallyPay/TPChangeInheritorRadio';
+export { default as TPDateInput } from './TallyPay/TPDateInput';
+export { default as TPTimeInput } from './TallyPay/TPTimeInput';
+export { default as DefiSingleAccount } from './TallyPay/DefiSingleAccount';
+export { default as DefiNotFoundComp } from './TallyPay/DefiNotFoundComp';
 
 // TokenChecker
 export { default as TokenCheckerNav } from './TokenChecker/TokenCheckerNav';

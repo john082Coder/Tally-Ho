@@ -9,6 +9,7 @@ const TallyPay = lazy(() => import("./TallyPay/TallyPay"));
 const TallyPayIndex = lazy(() => import("./TallyPay/TallyPayIndex"));
 const TallyWills = lazy(() => import("./TallyPay/TallyWills"));
 const LivingTrust = lazy(() => import("./TallyPay/LivingTrust"));
+const MyDefiAccount = lazy(() => import("./TallyPay/MyDefiAccount"));
 const TempLock = lazy(() => import("./TallyPay/TempLock"));
 const NFTmarketPage = lazy(() => import("./NFTMarketPage"));
 const StakeLaunchPadPage = lazy(() => import("./StakeLaunchpadPage"));
@@ -31,6 +32,7 @@ export {
     TallyWills,
     LivingTrust,
     TempLock,
+    MyDefiAccount,
     NFTmarketPage,
     StakeLaunchPadPage,
     NFTearnPage,

@@ -1,11 +1,13 @@
-const TPPasswordInputs = ({ password, confirmPassword, dispatch }) => {
-    const passwordChangeHandler = e => {
+import { debounce } from 'lodash';
+
+const TPPasswordInputs = ({ dispatch }) => {
+    const handleChange = debounce(e => {
         dispatch({
             type: 'updateFormData',
             field: e.target.name,
             value: e.target.value,
         });
-    };
+    }, 500);
 
     return (
         <>
@@ -17,8 +19,7 @@ const TPPasswordInputs = ({ password, confirmPassword, dispatch }) => {
                     className='block w-full rounded-lg border border-tallyPay-gray-lighter bg-transparent p-2.5 text-sm text-white '
                     placeholder='Create password'
                     required
-                    value={password}
-                    onChange={passwordChangeHandler}
+                    onChange={handleChange}
                 />
             </div>
             <div className='mb-6'>
@@ -29,8 +30,7 @@ const TPPasswordInputs = ({ password, confirmPassword, dispatch }) => {
                     className='block w-full rounded-lg border border-tallyPay-gray-lighter bg-transparent p-2.5 text-sm text-white '
                     placeholder='Re-Enter password'
                     required
-                    value={confirmPassword}
-                    onChange={passwordChangeHandler}
+                    onChange={handleChange}
                 />
             </div>
         </>

@@ -9,6 +9,8 @@ import {
 } from '../../components';
 import { produce } from 'immer';
 import { nanoid } from 'nanoid';
+import { debounce } from 'lodash';
+import tokens from '../../assets/data/tokens';
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -41,10 +43,11 @@ const reducer = (state, action) => {
 const TallyWillsNew = () => {
     const [state, dispatch] = useReducer(reducer, {
         formData: {
-            token: '',
+            token: tokens[0],
             address: '',
             amount: '',
             amountUSD: '',
+            email: '',
             password: '',
             confirmPassword: '',
             inheritors: [
@@ -57,6 +60,14 @@ const TallyWillsNew = () => {
         },
     });
 
+    const handleChangeToken = debounce(e => {
+        dispatch({
+            type: 'updateFormData',
+            field: 'token',
+            value: e,
+        });
+    }, 500);
+
     console.log(state.formData);
 
     return (
@@ -68,7 +79,11 @@ const TallyWillsNew = () => {
             }}
         >
             <div className='w-full'>
-                <SelectTokenCombobox />
+                <SelectTokenCombobox
+                    tokens={tokens}
+                    onChange={handleChangeToken}
+                    selected={state.formData.token}
+                />
             </div>
 
             <div className='mt-4 w-full'>
@@ -83,7 +98,10 @@ const TallyWillsNew = () => {
                 <TPDoubleInput
                     label='Amount'
                     name='amount'
-                    rightIcon='BNB'
+                    rightIcon={
+                        // this will be the first 3 characters of the token name
+                        state.formData.token.title.slice(0, 3).toUpperCase()
+                    }
                     bottomLabel='Amount in USD'
                     bottomRightIcon='USD'
                     bottomName='amountUSD'
@@ -135,6 +153,14 @@ const TallyWillsNew = () => {
                 </button>
             </div>
 
+            <div className='mt-4 w-full'>
+                <TPInput
+                    label='Your Email Address'
+                    name='email'
+                    dispatch={dispatch}
+                />
+            </div>
+
             <div className='mt-6 w-full'>
                 <TPPasswordInputs
                     dispatch={dispatch}
@@ -170,8 +196,8 @@ const TallyWillsNew = () => {
                 </div>
 
                 <div className='flex items-start justify-end space-x-2 text-white'>
-                    <span className='text-tallyPay-primaryText'>
-                        view Contract
+                    <span className='capitalize text-tallyPay-primaryText'>
+                        View Contract
                     </span>
                 </div>
             </div>

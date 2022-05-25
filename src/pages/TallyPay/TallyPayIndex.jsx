@@ -5,7 +5,7 @@ const TallyPayIndex = () => {
     return (
         <div>
             <p>TallyPayIndex this will be the landing page for TallyPay</p>
-            <ul>
+            <ul className='text-2xl text-white'>
                 <li>
                     <Link to='tally-wills'>Tally Wills</Link>
                 </li>
@@ -14,6 +14,9 @@ const TallyPayIndex = () => {
                 </li>
                 <li>
                     <Link to='temp-lock'>Temp Lock</Link>
+                </li>
+                <li>
+                    <Link to='my-defi'>My Defi</Link>
                 </li>
             </ul>
         </div>

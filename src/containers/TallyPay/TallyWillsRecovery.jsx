@@ -5,7 +5,7 @@ import {
     TPPasswordInputs,
 } from '../../components';
 import { produce } from 'immer';
-import { nanoid } from 'nanoid';
+import { debounce } from 'lodash';
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -13,40 +13,31 @@ const reducer = (state, action) => {
             return produce(state, draft => {
                 draft.formData[action.field] = action.value;
             });
-        case 'updateOtherInheritors':
-            return produce(state, draft => {
-                draft.formData.otherInheritors[action.index].percent =
-                    action.value;
-            });
         default:
             return state;
     }
 };
 
 const TallyWillsRecovery = () => {
-    //! the form data is not perfecty done, neither the reducer
-    // todo: Complete the form data and reducer
     const [state, dispatch] = useReducer(reducer, {
         formData: {
-            token: '',
             address: '',
-            amount: '',
-            amountUSD: '',
+            replaceAddress: '',
+            currentPassword: '',
             password: '',
             confirmPassword: '',
-            inheritorAddress: '',
-            inheritorEmail: '',
-            sendAmount: '',
-            otherInheritors: [
-                { id: nanoid(), percent: '0.00%' },
-                { id: nanoid(), percent: '0.00%' },
-                { id: nanoid(), percent: '0.00%' },
-                { id: nanoid(), percent: '0.00%' },
-            ],
         },
     });
 
     console.log(state.formData);
+
+    const handleChange = debounce(e => {
+        dispatch({
+            type: 'updateFormData',
+            field: e.target.name,
+            value: e.target.value,
+        });
+    }, 500);
 
     return (
         <form
@@ -56,6 +47,10 @@ const TallyWillsRecovery = () => {
                 console.log(state);
             }}
         >
+            <p className='my-4 text-white'>
+                Require an Inheritor to connect wallet to validate wallet change
+                <span className='ml-2 text-tallyPay-primaryText'>*</span>
+            </p>
             <div className='mt-4 w-full'>
                 <p className='inline-flex items-center text-sm font-normal text-tallyPay-primaryText'>
                     Loss of wallet address
@@ -66,11 +61,6 @@ const TallyWillsRecovery = () => {
                     dispatch={dispatch}
                 />
             </div>
-
-            <p className='my-4 text-white'>
-                Require an Inheritor to connect wallet to validate wallet change
-                <span className='ml-2 text-tallyPay-primaryText'>*</span>
-            </p>
 
             <div className='mt-4 w-full'>
                 <p className='inline-flex items-center text-sm font-normal text-tallyPay-primaryText'>
@@ -91,6 +81,7 @@ const TallyWillsRecovery = () => {
                     className='block w-full rounded-lg border border-tallyPay-gray-lighter bg-transparent p-2.5 text-sm text-white '
                     placeholder='Current password'
                     required
+                    onChange={handleChange}
                 />
             </div>
 
@@ -102,11 +93,7 @@ const TallyWillsRecovery = () => {
                     If you are using your replacement wallet for the first time
                     connect new wallet and enter a new password.
                 </p>
-                <TPPasswordInputs
-                    password={state.formData.password}
-                    confirmPassword={state.formData.confirmPassword}
-                    dispatch={dispatch}
-                />
+                <TPPasswordInputs dispatch={dispatch} />
             </div>
 
             <div className='mt-6 flex w-full flex-col items-center justify-center'>

@@ -5,6 +5,7 @@ import {
     TallyWillsNew,
     TallyWillsRecovery,
     TallyWillsRemove,
+    TallyWillsReport,
 } from '../../containers';
 import { produce } from 'immer';
 
@@ -54,6 +55,7 @@ const TallyWills = () => {
                 {state.currentTab === 'Add' && <TallyWillsAdd />}
                 {state.currentTab === 'Remove' && <TallyWillsRemove />}
                 {state.currentTab === 'Recovery' && <TallyWillsRecovery />}
+                {state.currentTab === 'Report' && <TallyWillsReport />}
             </div>
         </>
     );
