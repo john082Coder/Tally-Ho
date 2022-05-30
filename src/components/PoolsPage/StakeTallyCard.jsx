@@ -8,6 +8,7 @@ import { useWeb3React } from "@web3-react/core";
 import useAllowance from '../../hooks/useAllowance';
 import useApprove from '../../hooks/useApprove';
 import useTally from '../../hooks/useTally';
+import useAllStakedValue from '../../hooks/useAllStakedValue';
 import { bnToDec } from '../../utils';
 import { getEarned, getStaked, leaveStaking, enterStaking, harvestStaking } from '../../contracts/utils';
 import BigNumber from 'bignumber.js'
@@ -28,9 +29,22 @@ const StakeTallyCard = ({ coverImg, avatar, tokenName, apyValue, pool }) => {
     const [inputType, setInputType] = useState('enter');
     const tally = useTally();
     const pid = poolData?.pid;
-
-    //console.log("Allowance = ", allowance)
+    const stakedValue = useAllStakedValue();
+    
+    console.log("stakedValue = ", stakedValue)
     console.log("PoolData = ", poolData);
+    const farmPrice = stakedValue[0]
+    ? stakedValue[0]?.tokenPriceInWeth
+    : new BigNumber(0);
+    const BLOCKS_PER_YEAR = new BigNumber(2336000);
+	// TODO: After block height xxxx, FARM_PER_BLOCK = 100;
+	const FARM_PER_BLOCK = new BigNumber(1000);
+    const APY = farmPrice
+                    .times(FARM_PER_BLOCK)
+                    .times(BLOCKS_PER_YEAR)
+                    .times(100)
+                    .div(stakedValue[0]?.totalWethValue);
+    console.log("Allowance=", APY);
     useEffect(() => {
         async function fetchEarned() {
             if (!tally) return;
@@ -123,7 +137,7 @@ const StakeTallyCard = ({ coverImg, avatar, tokenName, apyValue, pool }) => {
                         Stake TALLY
                     </h4>
                     <p className='text-xl font-medium text-primary-brand'>
-                        APY 0%
+                        APY { 32 } %
                     </p>
                 </div>
             </div>
