@@ -137,7 +137,7 @@ const StakeTallyCard = ({ coverImg, avatar, tokenName, apyValue, pool }) => {
                         Stake TALLY
                     </h4>
                     <p className='text-xl font-medium text-primary-brand'>
-                        APY { 32 } %
+                        APY { 5.32 } %
                     </p>
                 </div>
             </div>
